@@ -1,0 +1,19 @@
+.env
+.test
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+
+# Dependency directories (goland, VSCode, etc)
+.idea/
+.vscode/
+*.swp
+
+*.xml
