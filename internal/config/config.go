@@ -8,6 +8,7 @@ import (
 	
 )
 
+
 type Config struct {
 	DB_HOST string
 	DB_PORT string
@@ -16,6 +17,13 @@ type Config struct {
 	DB_NAME string
 	PORT    string
 }
+
+func (cfg *Config) GetDSN() string{
+
+	return "user=" + cfg.DB_USER + " password=" + cfg.DB_PASS + " dbname=" + cfg.DB_NAME + " sslmode=disable"
+
+}
+
 
 func LoadConfig() (Config, error) {
 

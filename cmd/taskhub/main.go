@@ -1,29 +1,23 @@
 package main
 
 import (
-	"TaskHub/internal/config"
 	"TaskHub/internal/server"
 	"log"
-	"github.com/gin-gonic/gin"
+	"TaskHub/internal/db"
+	"TaskHub/internal/config"
+	"TaskHub/internal/routers"
 )
 
 func main() {
 
 	cfg, err := config.LoadConfig()
-	if err != nil {
-		log.Fatalln(err)
+	if err != nil{
+		log.Fatalln("Config error: ", err)
 	}
 
+	conn := db.Connect(&cfg)
 	router := server.New()
+	routers.RegisterRoutes(router, conn)
 
-
-	router.GET("/ping", handler)
-
-	router.Run(":" + cfg.PORT, )
-
-}
-
-
-func handler(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{"message": "pong"})
+	router.Run(":" + cfg.PORT)
 }
