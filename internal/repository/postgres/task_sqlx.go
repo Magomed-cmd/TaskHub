@@ -57,7 +57,7 @@ func (r *TaskRepo) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-func (r *TaskRepo) Update(ctx context.Context, task *model.Task) error {
+func (r *TaskRepo) Update(ctx context.Context, task *model.Task) (*model.Task, error) {
 	updates := map[string]interface{}{}
 
 	if task.Title != nil {
@@ -83,7 +83,7 @@ func (r *TaskRepo) Update(ctx context.Context, task *model.Task) error {
 	}
 
 	if len(updates) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	updates["updated_at"] = time.Now()
@@ -96,8 +96,17 @@ func (r *TaskRepo) Update(ctx context.Context, task *model.Task) error {
 		}
 	}
 
-	query := fmt.Sprintf("UPDATE task SET %s WHERE id = :id", strings.Join(set, ", "))
+	query := fmt.Sprintf("UPDATE task SET %s WHERE id = :id RETURNING *", strings.Join(set, ", "))
 
-	_, err := r.db.NamedExecContext(ctx, query, updates)
-	return err
+	var updated model.Task
+	stmt, err := r.db.PrepareNamedContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := stmt.GetContext(ctx, &updated, updates); err != nil {
+		return nil, err
+	}
+
+	return &updated, nil
 }

@@ -12,11 +12,11 @@ import (
 
 func main() {
 
-	cfg, err := config.LoadConfig()
+	cfg, err := config.InitConfig()
 	if err != nil {
 		log.Fatalln("Config error: ", err)
 	}
-	conn := db.Connect(&cfg)
+	conn := db.Connect(cfg)
 
 	taskRepo := postgres.NewTaskRepo(conn)
 	taskService := service.NewTaskService(taskRepo)
@@ -24,7 +24,7 @@ func main() {
 	router := server.New()
 	routers.RegisterRoutes(router, taskService)
 
-	if err := router.Run(":" + cfg.PORT); err != nil {
+	if err := router.Run(":" + cfg.App.PORT); err != nil {
 		log.Fatal(err)
 	}
 

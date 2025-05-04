@@ -1,44 +1,47 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 	"log"
-	"os"
 )
 
 type Config struct {
-	DB_HOST string
-	DB_PORT string
-	DB_USER string
-	DB_PASS string
-	DB_NAME string
-	PORT    string
+	DataBase struct {
+		DBHost string `mapstructure:"DB_HOST"`
+		DBPort string `mapstructure:"DB_PORT"`
+		DBUser string `mapstructure:"DB_USER"`
+		DBPass string `mapstructure:"DB_PASS"`
+		DBName string `mapstructure:"DB_NAME"`
+	} `mapstructure:"DataBase"`
+	App struct {
+		PORT           string   `mapstucture:"PORT"`
+		TrustedProxies []string `mapstructure:"TrustedProxies"`
+	} `mapstructure:"App"`
 }
 
 func (cfg *Config) GetDSN() string {
 
-	return "user=" + cfg.DB_USER + " password=" + cfg.DB_PASS + " dbname=" + cfg.DB_NAME + " sslmode=disable"
+	return "user=" + cfg.DataBase.DBUser + " password=" + cfg.DataBase.DBPass + " dbname=" + cfg.DataBase.DBName + " sslmode=disable"
 
 }
 
-func LoadConfig() (Config, error) {
+func InitConfig() (*Config, error) {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("/config")
 
-	err := godotenv.Load()
-	log.Println("Loading .env file")
+	var cfg Config
 
-	if err != nil {
-		log.Println("Error loading .env file", err)
-		return Config{}, err
+	if err := viper.ReadInConfig(); err != nil {
+		log.Println("error to read config file: ", err)
+		return nil, err
 	}
 
-	log.Println("Config loaded")
+	if err := viper.Unmarshal(&cfg); err != nil {
+		log.Println("error to Unmarshalling config structure: ", err)
+		return nil, err
+	}
 
-	return Config{
-		DB_HOST: os.Getenv("DB_HOST"),
-		DB_PORT: os.Getenv("DB_PORT"),
-		DB_USER: os.Getenv("DB_USER"),
-		DB_PASS: os.Getenv("DB_PASS"),
-		DB_NAME: os.Getenv("DB_NAME"),
-		PORT:    os.Getenv("PORT"),
-	}, nil
+	return &cfg, nil
 }

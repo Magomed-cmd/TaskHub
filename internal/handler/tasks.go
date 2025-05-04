@@ -104,12 +104,12 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	err = h.service.UpdateTask(ctx, &task)
+	newTask, err := h.service.UpdateTask(ctx, &task)
 	if err != nil {
 		log.Printf("error to update task: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"task": task})
+	c.JSON(http.StatusOK, gin.H{"task": newTask})
 }

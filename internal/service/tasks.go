@@ -26,6 +26,6 @@ func (s *TaskService) DeleteTask(ctx context.Context, id int) error {
 	return s.repo.Delete(ctx, id)
 }
 
-func (s *TaskService) UpdateTask(ctx context.Context, task *model.Task) error {
+func (s *TaskService) UpdateTask(ctx context.Context, task *model.Task) (*model.Task, error) {
 	return s.repo.Update(ctx, task)
 }
