@@ -1,13 +1,10 @@
 package config
 
 import (
+	"github.com/joho/godotenv"
 	"log"
 	"os"
-
-	"github.com/joho/godotenv"
-	
 )
-
 
 type Config struct {
 	DB_HOST string
@@ -18,23 +15,21 @@ type Config struct {
 	PORT    string
 }
 
-func (cfg *Config) GetDSN() string{
+func (cfg *Config) GetDSN() string {
 
 	return "user=" + cfg.DB_USER + " password=" + cfg.DB_PASS + " dbname=" + cfg.DB_NAME + " sslmode=disable"
 
 }
-
 
 func LoadConfig() (Config, error) {
 
 	err := godotenv.Load()
 	log.Println("Loading .env file")
 
-
-	if err != nil {	
+	if err != nil {
 		log.Println("Error loading .env file", err)
 		return Config{}, err
-		}
+	}
 
 	log.Println("Config loaded")
 

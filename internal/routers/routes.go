@@ -1,12 +1,14 @@
 package routers
 
 import (
+	"TaskHub/internal/service"
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 )
 
-func RegisterRoutes(r *gin.Engine, conn *sqlx.DB){
+func RegisterRoutes(r *gin.Engine, s *service.TaskService) {
+
 	v1 := r.Group("api/v1")
-	RegisterAuthRoutes(v1, conn)
-	RegisterTaskRoutes(v1, conn)
+
+	RegisterAuthRoutes(v1, s)
+	RegisterTaskRoutes(v1, s)
 }
