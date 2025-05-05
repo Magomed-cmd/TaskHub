@@ -29,3 +29,7 @@ func (s *TaskService) DeleteTask(ctx context.Context, id int) error {
 func (s *TaskService) UpdateTask(ctx context.Context, task *model.Task) (*model.Task, error) {
 	return s.repo.Update(ctx, task)
 }
+
+func (s *TaskService) GetTaskByID(ctx context.Context, id int) (*model.Task, error) {
+	return s.repo.GetTaskByID(ctx, id)
+}

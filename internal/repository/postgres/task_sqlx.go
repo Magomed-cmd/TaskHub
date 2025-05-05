@@ -4,6 +4,7 @@ import (
 	"TaskHub/internal/repository"
 	"TaskHub/pkg/model"
 	"context"
+	"errors"
 	"gorm.io/gorm"
 	"log"
 	"time"
@@ -34,6 +35,20 @@ func (r *TaskRepo) Get(ctx context.Context) ([]model.Task, error) {
 		return nil, result.Error
 	}
 	return tasks, nil
+}
+
+func (r *TaskRepo) GetTaskByID(ctx context.Context, id int) (*model.Task, error) {
+
+	task := model.Task{}
+	result := r.db.WithContext(ctx).First(&task, id)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, result.Error
+		}
+		log.Printf("failed to fetch task with id=%d: %v", id, result.Error)
+		return nil, result.Error
+	}
+	return &task, nil
 }
 
 func (r *TaskRepo) Delete(ctx context.Context, id int) error {

@@ -15,4 +15,5 @@ func RegisterTaskRoutes(rg *gin.RouterGroup, s *service.TaskService) {
 	task.POST("/", h.Create)
 	task.DELETE("/:id/", h.Delete)
 	task.PATCH("/:id", h.UpdateTask)
+	task.GET("/:id", h.GetTaskByID)
 }

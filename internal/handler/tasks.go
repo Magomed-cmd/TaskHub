@@ -5,11 +5,10 @@ import (
 	"TaskHub/pkg/model"
 	"database/sql"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 type TaskHandler struct {
@@ -52,7 +51,32 @@ func (h *TaskHandler) GetTasks(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, tasks)
+	c.JSON(http.StatusOK, gin.H{"tasks": tasks})
+}
+
+func (h *TaskHandler) GetTaskByID(c *gin.Context) {
+
+	ctx := c.Request.Context()
+
+	id_s := c.Param("id")
+
+	id, err := strconv.Atoi(id_s)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	task, err := h.service.GetTaskByID(ctx, id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"task": task})
 }
 
 func (h *TaskHandler) Delete(c *gin.Context) {

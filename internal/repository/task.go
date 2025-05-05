@@ -10,4 +10,5 @@ type TaskRepository interface {
 	Get(ctx context.Context) ([]model.Task, error)
 	Delete(ctx context.Context, id int) error
 	Update(ctx context.Context, task *model.Task) (*model.Task, error)
+	GetTaskByID(ctx context.Context, id int) (*model.Task, error)
 }
