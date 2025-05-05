@@ -2,19 +2,25 @@ package db
 
 import (
 	"TaskHub/internal/config"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"log"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
-
 )
 
+func Connect(cfg *config.Config) *gorm.DB {
 
+	gormConfig := &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+	}
 
-func Connect(cfg *config.Config) *sqlx.DB{
+	conn, err := gorm.Open(postgres.Open(cfg.GetDSN()), gormConfig)
 
-	conn, err := sqlx.Connect("postgres", cfg.GetDSN())
-	if err != nil{
+	if err != nil {
 		log.Fatalln("DB connection error: ", err)
 	}
+
 	return conn
 }

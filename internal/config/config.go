@@ -7,11 +7,12 @@ import (
 
 type Config struct {
 	DataBase struct {
-		DBHost string `mapstructure:"DB_HOST"`
-		DBPort string `mapstructure:"DB_PORT"`
-		DBUser string `mapstructure:"DB_USER"`
-		DBPass string `mapstructure:"DB_PASS"`
-		DBName string `mapstructure:"DB_NAME"`
+		DBHost  string `mapstructure:"DB_HOST"`
+		DBPort  string `mapstructure:"DB_PORT"`
+		DBUser  string `mapstructure:"DB_USER"`
+		DBPass  string `mapstructure:"DB_PASS"`
+		DBName  string `mapstructure:"DB_NAME"`
+		SSLMode string `mapstructure:"SSLMode"`
 	} `mapstructure:"DataBase"`
 	App struct {
 		PORT           string   `mapstucture:"PORT"`
@@ -21,7 +22,12 @@ type Config struct {
 
 func (cfg *Config) GetDSN() string {
 
-	return "user=" + cfg.DataBase.DBUser + " password=" + cfg.DataBase.DBPass + " dbname=" + cfg.DataBase.DBName + " sslmode=disable"
+	return "host=" + cfg.DataBase.DBHost +
+		" port=" + cfg.DataBase.DBPort +
+		" user=" + cfg.DataBase.DBUser +
+		" password=" + cfg.DataBase.DBPass +
+		" dbname=" + cfg.DataBase.DBName +
+		" sslmode=" + cfg.DataBase.SSLMode
 
 }
 

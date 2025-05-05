@@ -9,7 +9,7 @@
 *.dylib
 *.test
 *.out
-
+config.yaml
 
 # Dependency directories (goland, VSCode, etc)
 .idea/
