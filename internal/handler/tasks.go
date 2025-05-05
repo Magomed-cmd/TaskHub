@@ -114,8 +114,8 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	id, err := strconv.Atoi(c.Param("id"))
-	id64 := int64(id)
-	task.ID = &id64
+	idu64 := uint64(id)
+	task.ID = idu64
 
 	if err != nil {
 		log.Printf("error to convert id to int: %v", err)

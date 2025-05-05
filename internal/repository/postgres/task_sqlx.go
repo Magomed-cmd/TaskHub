@@ -69,17 +69,20 @@ func (r *TaskRepo) Delete(ctx context.Context, id int) error {
 func (r *TaskRepo) Update(ctx context.Context, task *model.Task) (*model.Task, error) {
 	updates := map[string]interface{}{}
 
-	if task.Title != nil {
-		updates["title"] = *task.Title
+	// Строки и enum-поля — сравниваются с пустой строкой
+	if task.Title != "" {
+		updates["title"] = task.Title
 	}
+	if task.Status != "" {
+		updates["status"] = string(task.Status)
+	}
+	if task.Priority != "" {
+		updates["priority"] = string(task.Priority)
+	}
+
+	// Указатели — сравниваются с nil
 	if task.Detail != nil {
 		updates["detail"] = *task.Detail
-	}
-	if task.Status != nil {
-		updates["status"] = string(*task.Status)
-	}
-	if task.Priority != nil {
-		updates["priority"] = string(*task.Priority)
 	}
 	if task.DueDate != nil {
 		updates["due_date"] = *task.DueDate
@@ -92,7 +95,7 @@ func (r *TaskRepo) Update(ctx context.Context, task *model.Task) (*model.Task, e
 	}
 
 	if len(updates) == 0 {
-		return nil, nil // ничего обновлять — ничего делать
+		return nil, nil // Нечего обновлять
 	}
 
 	updates["updated_at"] = time.Now()

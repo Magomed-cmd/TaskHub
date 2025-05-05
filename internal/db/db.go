@@ -2,6 +2,7 @@ package db
 
 import (
 	"TaskHub/internal/config"
+	"TaskHub/pkg/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -20,6 +21,11 @@ func Connect(cfg *config.Config) *gorm.DB {
 
 	if err != nil {
 		log.Fatalln("DB connection error: ", err)
+	}
+
+	err = conn.AutoMigrate(&model.User{}, &model.Task{})
+	if err != nil {
+		log.Fatalf("failed to migrate DB: %v", err)
 	}
 
 	return conn
