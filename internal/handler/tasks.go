@@ -38,7 +38,6 @@ func (h *TaskHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"object": task,
 	})
-
 }
 
 func (h *TaskHandler) GetTasks(c *gin.Context) {

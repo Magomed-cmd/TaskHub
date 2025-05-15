@@ -17,6 +17,7 @@ type Config struct {
 	App struct {
 		PORT           string   `mapstucture:"PORT"`
 		TrustedProxies []string `mapstructure:"TrustedProxies"`
+		JWTSecret      string   `mapstructure:"JWTSecret"`
 	} `mapstructure:"App"`
 }
 

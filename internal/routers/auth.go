@@ -1,11 +1,15 @@
 package routers
 
 import (
+	"TaskHub/internal/handler"
 	"TaskHub/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterAuthRoutes(rg *gin.RouterGroup, s *service.TaskService) {
+func RegisterAuthRoutes(rg *gin.RouterGroup, s *service.AuthService) {
 	auth := rg.Group("/auth")
-	auth.GET("/")
+
+	h := handler.NewAuthHandler(*s)
+
+	auth.POST("/", h.Login)
 }

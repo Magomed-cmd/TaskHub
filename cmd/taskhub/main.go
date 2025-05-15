@@ -11,18 +11,24 @@ import (
 )
 
 func main() {
-
 	cfg, err := config.InitConfig()
 	if err != nil {
 		log.Fatalln("Config error: ", err)
 	}
 	conn := db.Connect(cfg)
 
-	taskRepo := postgres.NewTaskRepo(conn)
-	taskService := service.NewTaskService(taskRepo)
+	userRepo := postgres.NewUserRepo(conn)
+	taskService := service.NewTaskService(postgres.NewTaskRepo(conn))
+	authService := service.NewAuthService(userRepo, cfg.App.JWTSecret)
+	userService := service.NewUserService(userRepo)
+	services := service.Services{
+		TaskService: taskService,
+		UserService: userService,
+		AuthService: authService,
+	}
 
 	router := server.New()
-	routers.RegisterRoutes(router, taskService)
+	routers.RegisterRoutes(router, &services)
 
 	if err := router.Run(":" + cfg.App.PORT); err != nil {
 		log.Fatal(err)
