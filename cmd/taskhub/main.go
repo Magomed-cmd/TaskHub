@@ -7,10 +7,12 @@ import (
 	"TaskHub/internal/routers"
 	"TaskHub/internal/server"
 	"TaskHub/internal/service"
+	"fmt"
 	"log"
 )
 
 func main() {
+	fmt.Println("=== Start main.go ===")
 	cfg, err := config.InitConfig()
 	if err != nil {
 		log.Fatalln("Config error: ", err)
@@ -29,7 +31,6 @@ func main() {
 
 	router := server.New()
 	routers.RegisterRoutes(router, &services)
-
 	if err := router.Run(":" + cfg.App.PORT); err != nil {
 		log.Fatal(err)
 	}

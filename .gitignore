@@ -17,3 +17,5 @@ config.yaml
 *.swp
 
 *.xml
+tmp
+tasks.md
