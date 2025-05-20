@@ -1,17 +1,17 @@
 package handler
 
 import (
+	"TaskHub/internal/pkg/model"
 	"TaskHub/internal/service"
-	"TaskHub/pkg/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type AuthHandler struct {
-	s service.AuthService
+	s *service.AuthService
 }
 
-func NewAuthHandler(s service.AuthService) *AuthHandler {
+func NewAuthHandler(s *service.AuthService) *AuthHandler {
 	return &AuthHandler{s: s}
 }
 

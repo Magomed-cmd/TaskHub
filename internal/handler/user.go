@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"TaskHub/internal/pkg/model"
 	"TaskHub/internal/service"
-	"TaskHub/pkg/model"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

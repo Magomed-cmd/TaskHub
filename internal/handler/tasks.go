@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"TaskHub/internal/pkg/model"
 	"TaskHub/internal/service"
-	"TaskHub/pkg/model"
 	"database/sql"
 	"errors"
 	"github.com/gin-gonic/gin"

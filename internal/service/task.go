@@ -1,16 +1,16 @@
 package service
 
 import (
-	"TaskHub/internal/repository"
-	"TaskHub/pkg/model"
+	"TaskHub/internal/pkg/model"
+	"TaskHub/internal/repository/interfaces"
 	"context"
 )
 
 type TaskService struct {
-	repo repository.TaskRepository
+	repo interfaces.TaskRepository
 }
 
-func NewTaskService(repo repository.TaskRepository) *TaskService {
+func NewTaskService(repo interfaces.TaskRepository) *TaskService {
 	return &TaskService{repo: repo}
 }
 

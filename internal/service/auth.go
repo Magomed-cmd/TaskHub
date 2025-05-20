@@ -1,20 +1,20 @@
 package service
 
 import (
-	"TaskHub/internal/repository"
+	"TaskHub/internal/pkg/model"
+	"TaskHub/internal/repository/interfaces"
 	"TaskHub/internal/utils"
-	"TaskHub/pkg/model"
 	"context"
 	"log"
 	"net/mail"
 )
 
 type AuthService struct {
-	repo      repository.UserRepository
+	repo      interfaces.UserRepository
 	jwtSecret string
 }
 
-func NewAuthService(repo repository.UserRepository, jwtSecret string) *AuthService {
+func NewAuthService(repo interfaces.UserRepository, jwtSecret string) *AuthService {
 	return &AuthService{repo: repo, jwtSecret: jwtSecret}
 }
 

@@ -1,8 +1,8 @@
-package postgres
+package postgresql
 
 import (
-	"TaskHub/internal/repository"
-	"TaskHub/pkg/model"
+	"TaskHub/internal/pkg/model"
+	"TaskHub/internal/repository/interfaces"
 	"context"
 	"errors"
 	"gorm.io/gorm"
@@ -14,7 +14,7 @@ type TaskRepo struct {
 	db *gorm.DB
 }
 
-func NewTaskRepo(db *gorm.DB) repository.TaskRepository {
+func NewTaskRepo(db *gorm.DB) interfaces.TaskRepository {
 	return &TaskRepo{db: db}
 }
 

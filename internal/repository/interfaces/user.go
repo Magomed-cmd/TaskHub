@@ -1,7 +1,7 @@
-package repository
+package interfaces
 
 import (
-	"TaskHub/pkg/model"
+	"TaskHub/internal/pkg/model"
 	"context"
 )
 

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"TaskHub/internal/repository"
+	"TaskHub/internal/pkg/model"
+	"TaskHub/internal/repository/interfaces"
 	"TaskHub/internal/utils"
-	"TaskHub/pkg/model"
 	"context"
 	"log"
 	"net/mail"
@@ -12,10 +12,10 @@ import (
 )
 
 type UserService struct {
-	repo repository.UserRepository
+	repo interfaces.UserRepository
 }
 
-func NewUserService(repo repository.UserRepository) *UserService {
+func NewUserService(repo interfaces.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 

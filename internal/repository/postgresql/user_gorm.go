@@ -1,7 +1,7 @@
-package postgres
+package postgresql
 
 import (
-	"TaskHub/pkg/model"
+	"TaskHub/internal/pkg/model"
 	"context"
 	"gorm.io/gorm"
 	"log"

@@ -2,27 +2,36 @@ package main
 
 import (
 	"TaskHub/internal/config"
-	"TaskHub/internal/db"
-	"TaskHub/internal/repository/postgres"
+	"TaskHub/internal/db/postgres"
+	"TaskHub/internal/db/redis"
+	"TaskHub/internal/repository/postgresql"
 	"TaskHub/internal/routers"
 	"TaskHub/internal/server"
 	"TaskHub/internal/service"
-	"fmt"
 	"log"
 )
 
 func main() {
-	fmt.Println("=== Start main.go ===")
+
 	cfg, err := config.InitConfig()
 	if err != nil {
 		log.Fatalln("Config error: ", err)
 	}
-	conn := db.Connect(cfg)
 
-	userRepo := postgres.NewUserRepo(conn)
-	taskService := service.NewTaskService(postgres.NewTaskRepo(conn))
+	pgConn := postgres.Connect(cfg)
+
+	// TODO: не забыть вернуть значение redis на место
+	_, err = redis.Connect(cfg)
+	if err != nil {
+		log.Fatalln("Redis connection error: ", err)
+	}
+
+	userRepo := postgresql.NewUserRepo(pgConn)
+
+	taskService := service.NewTaskService(postgresql.NewTaskRepo(pgConn))
 	authService := service.NewAuthService(userRepo, cfg.App.JWTSecret)
 	userService := service.NewUserService(userRepo)
+
 	services := service.Services{
 		TaskService: taskService,
 		UserService: userService,

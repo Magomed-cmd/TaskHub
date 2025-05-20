@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"TaskHub/pkg/model"
+	"TaskHub/internal/pkg/model"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"time"
